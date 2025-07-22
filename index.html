@@ -1,0 +1,503 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Birthday Messages</title>
+    <style>
+        :root {
+            --primary: #FF6B6B;
+            --secondary: #FF8E8E;
+            --accent: #FFD166;
+            --light: #F7FFF7;
+            --dark: #292F36;
+            --success: #06D6A0;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+        
+        body {
+            background-color: #F7FFF7;
+            color: var(--dark);
+            line-height: 1.6;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            background-image: radial-gradient(circle at 10% 20%, rgba(255,214,102,0.1) 0%, rgba(255,107,107,0.1) 90%);
+        }
+        
+        .container {
+            max-width: 600px;
+            width: 90%;
+            margin: 20px auto;
+            padding: 20px;
+        }
+        
+        header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        
+        h1 {
+            font-size: 3rem;
+            margin-bottom: 10px;
+            background: linear-gradient(45deg, #FF6B6B, #FFD166);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            font-weight: 700;
+        }
+        
+        .subtitle {
+            color: #636e72;
+            font-size: 1.1rem;
+        }
+        
+        .card {
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+            padding: 30px;
+            transition: all 0.5s ease;
+            min-height: 400px;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 5px;
+            background: linear-gradient(90deg, #FF6B6B, #FFD166);
+        }
+        
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        
+        .card-title {
+            font-size: 1.5rem;
+            color: var(--primary);
+            font-weight: 600;
+        }
+        
+        .card-number {
+            background: var(--secondary);
+            color: white;
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1rem;
+            font-weight: bold;
+        }
+        
+        .card-message {
+            margin-bottom: 25px;
+            color: #555;
+            font-size: 1.1rem;
+            flex-grow: 1;
+            line-height: 1.8;
+        }
+        
+        .btn {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 14px 30px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            align-self: flex-end;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        
+        .btn:hover {
+            background: #ff5252;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 10px rgba(0,0,0,0.15);
+        }
+        
+        .btn:active {
+            transform: translateY(0);
+        }
+        
+        .btn-secondary {
+            background: var(--accent);
+        }
+        
+        .btn-secondary:hover {
+            background: #ffc233;
+        }
+        
+        .progress-container {
+            width: 100%;
+            background: #e0e0e0;
+            border-radius: 10px;
+            margin: 30px 0;
+            height: 8px;
+            overflow: hidden;
+        }
+        
+        .progress-bar {
+            height: 100%;
+            background: linear-gradient(90deg, #FF6B6B, #FFD166);
+            width: 0%;
+            transition: width 0.5s ease;
+        }
+        
+        .completion-message {
+            text-align: center;
+            padding: 40px;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+            display: none;
+        }
+        
+        .completion-message h2 {
+            color: var(--success);
+            margin-bottom: 20px;
+            font-size: 2rem;
+        }
+        
+        .thank-you {
+            font-size: 1.3rem;
+            margin-bottom: 30px;
+            color: #555;
+        }
+        
+        .password-form {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+        
+        .password-input {
+            padding: 15px;
+            border: 1px solid #eee;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+        
+        .password-input:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(255, 107, 107, 0.2);
+        }
+        
+        .password-clue {
+            font-size: 0.9rem;
+            color: #777;
+            text-align: center;
+            margin-top: 5px;
+        }
+        
+        .birthday-celebration {
+            display: none;
+            text-align: center;
+            animation: fadeIn 1s ease-out;
+        }
+        
+        .birthday-title {
+            font-size: 4rem;
+            background: linear-gradient(45deg, #FF6B6B, #FFD166, #06D6A0);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            margin-bottom: 20px;
+            font-weight: 800;
+        }
+        
+        .confetti {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            background-color: var(--primary);
+            opacity: 0.7;
+            animation: confettiFall 5s linear infinite;
+        }
+        
+        @keyframes confettiFall {
+            0% {
+                transform: translateY(-100vh) rotate(0deg);
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(100vh) rotate(360deg);
+                opacity: 0;
+            }
+        }
+        
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .fade-out {
+            animation: fadeOut 0.5s ease-out forwards;
+        }
+        
+        @keyframes fadeOut {
+            to {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+        }
+        
+        footer {
+            text-align: center;
+            margin-top: 40px;
+            color: #636e72;
+            font-size: 0.9rem;
+        }
+        
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2.5rem;
+            }
+            
+            .card {
+                padding: 25px;
+                min-height: 380px;
+            }
+            
+            .birthday-title {
+                font-size: 3rem;
+            }
+        }
+    </style>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <div id="passwordCard" class="card">
+            <div class="card-header">
+                <h3 class="card-title">Enter Password</h3>
+            </div>
+            <div class="card-message">
+                <p>This is a special private message. Please enter the password to continue.</p>
+                <div class="password-form">
+                    <input type="password" class="password-input" id="passwordInput" placeholder="Enter password">
+                    <p class="password-clue">Hint: My dog's name</p>
+                </div>
+            </div>
+            <button class="btn" onclick="checkPassword()">Continue</button>
+        </div>
+        
+        <div id="birthdayCelebration" class="birthday-celebration">
+            <h1 class="birthday-title">Happy Birthday!</h1>
+            <p style="font-size: 1.2rem; margin-bottom: 30px; color: #555;">Here's a special message just for you</p>
+            <button class="btn" onclick="startMessages()">Continue to Messages</button>
+        </div>
+        
+        <div id="messageCard" class="card" style="display: none;">
+            <!-- Card content will be updated by JavaScript -->
+        </div>
+        
+        <div class="completion-message" id="completionMessage">
+            <h2>Thank You!</h2>
+            <p class="thank-you">I hope you enjoyed these birthday messages!</p>
+        </div>
+        
+        <footer>
+            <p>Created with care • Birthday 2023</p>
+        </footer>
+    </div>
+
+    <script>
+        // Messages with your content
+        const messages = [
+            {
+                title: "Birthday Present",
+                content: "This is my birthday present to you as a programmer who barely knows how to code. HAHAHAHAHA! Please click continue."
+            },
+            {
+                title: "To My Rant Buddy",
+                content: "To my rant buddy who knows most of my problems even though you don't realize it - Happy Birthday!!!"
+            },
+            {
+                title: "First Impressions",
+                content: "From the very first time I met you and talked to you, I knew you were a good person."
+            },
+            {
+                title: "Apology",
+                content: "I know I've done a lot of bad things that resulted in confusion, overthinking, and other issues. I'm sorry for that."
+            },
+            {
+                title: "Wishes",
+                content: "Hope you achieve the best things in life. Our future dentist! Cheers!"
+            },
+            {
+                title: "Final Message",
+                content: "Thank you for being such an important person in my life. I truly appreciate you!"
+            }
+        ];
+        
+        // Load saved progress from localStorage
+        let currentCardIndex = localStorage.getItem('currentCardIndex') ? 
+                              parseInt(localStorage.getItem('currentCardIndex')) : 0;
+        let hasCompleted = localStorage.getItem('hasCompleted') === 'true';
+        
+        // Reset if all cards were viewed previously
+        if (hasCompleted) {
+            currentCardIndex = 0;
+            localStorage.removeItem('currentCardIndex');
+            localStorage.removeItem('hasCompleted');
+        }
+        
+        // DOM elements
+        const passwordCard = document.getElementById('passwordCard');
+        const birthdayCelebration = document.getElementById('birthdayCelebration');
+        const messageCard = document.getElementById('messageCard');
+        const progressBar = document.getElementById('progressBar');
+        const completionMessage = document.getElementById('completionMessage');
+        
+        // Check if user already entered password
+        if (localStorage.getItem('passwordEntered') === 'true') {
+            passwordCard.style.display = 'none';
+            birthdayCelebration.style.display = 'block';
+            createConfetti();
+        }
+        
+        // Check password
+        function checkPassword() {
+            const passwordInput = document.getElementById('passwordInput');
+            const password = passwordInput.value.trim().toLowerCase();
+            
+            if (password === 'cardo') {
+                // Save to localStorage
+                localStorage.setItem('passwordEntered', 'true');
+                
+                // Hide password card
+                passwordCard.classList.add('fade-out');
+                
+                // Show birthday celebration after animation
+                setTimeout(() => {
+                    passwordCard.style.display = 'none';
+                    birthdayCelebration.style.display = 'block';
+                    createConfetti();
+                }, 500);
+            } else {
+                alert('Incorrect password. Hint: My undying dog');
+                passwordInput.focus();
+            }
+        }
+        
+        // Create confetti effect
+        function createConfetti() {
+            const colors = ['#FF6B6B', '#FFD166', '#06D6A0', '#118AB2', '#073B4C'];
+            
+            for (let i = 0; i < 100; i++) {
+                const confetti = document.createElement('div');
+                confetti.className = 'confetti';
+                confetti.style.left = Math.random() * 100 + 'vw';
+                confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+                confetti.style.width = Math.random() * 10 + 5 + 'px';
+                confetti.style.height = Math.random() * 10 + 5 + 'px';
+                confetti.style.animationDuration = Math.random() * 3 + 2 + 's';
+                confetti.style.animationDelay = Math.random() * 2 + 's';
+                document.body.appendChild(confetti);
+            }
+        }
+        
+        // Start messages after birthday celebration
+        function startMessages() {
+            birthdayCelebration.classList.add('fade-out');
+            
+            setTimeout(() => {
+                birthdayCelebration.style.display = 'none';
+                messageCard.style.display = 'flex';
+                showCard(currentCardIndex);
+            }, 500);
+        }
+        
+        // Show current card
+        function showCard(index) {
+            const message = messages[index];
+            
+            messageCard.innerHTML = `
+                <div class="card-header">
+                    <h3 class="card-title">${message.title}</h3>
+                    <div class="card-number">${index + 1}/${messages.length}</div>
+                </div>
+                <p class="card-message">${message.content}</p>
+                <button class="btn ${index === messages.length - 1 ? 'btn-secondary' : ''}" 
+                        onclick="nextCard()">
+                    ${index === messages.length - 1 ? 'Finish' : 'Continue'}
+                </button>
+            `;
+            
+            messageCard.classList.remove('fade-out');
+            messageCard.classList.add('fade-in');
+            
+            updateProgress();
+        }
+        
+        // Go to next card
+        function nextCard() {
+            // Animate card disappearance
+            messageCard.classList.remove('fade-in');
+            messageCard.classList.add('fade-out');
+            
+            setTimeout(() => {
+                if (currentCardIndex < messages.length - 1) {
+                    currentCardIndex++;
+                    // Save progress to localStorage
+                    localStorage.setItem('currentCardIndex', currentCardIndex);
+                    showCard(currentCardIndex);
+                } else {
+                    // All cards completed
+                    localStorage.setItem('hasCompleted', 'true');
+                    localStorage.removeItem('currentCardIndex');
+                    messageCard.style.display = 'none';
+                    completionMessage.style.display = 'block';
+                    completionMessage.classList.add('fade-in');
+                }
+            }, 500);
+            
+            updateProgress();
+        }
+        
+        // Update progress bar
+        function updateProgress() {
+            if (!progressBar) return;
+            const progress = ((currentCardIndex + 1) / messages.length) * 100;
+            progressBar.style.width = `${progress}%`;
+        }
+        
+        // Allow pressing Enter in password field
+        document.getElementById('passwordInput').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                checkPassword();
+            }
+        });
+    </script>
+</body>
+</html>
